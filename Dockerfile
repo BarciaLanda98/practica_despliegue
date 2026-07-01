@@ -8,8 +8,11 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 COPY index.js .
 
-# Instalar dependencias
-RUN npm ci
+# Limita el consumo interno de RAM de Node a 1.5 GB
+ENV NODE_OPTIONS="--max-old-space-size=1536"
+
+# Si esta imagen es para producción, ignora las dependencias de desarrollo para ahorrar memoria
+RUN npm ci --omit=dev
 
 # Exponer el puerto de la aplicación
 EXPOSE 3000
