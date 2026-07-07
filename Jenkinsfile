@@ -7,15 +7,8 @@ pipeline {
 
     stages {
         stage('Ejecutar Tests') {
-            agent {
-                docker {
-                    image 'node:22-alpine'
-                    reuseNode true
-                }
-            }
             steps {
-                sh 'npm ci'
-                sh 'npm test'
+                sh 'docker run --rm --volumes-from jenkins -w "$WORKSPACE" node:22-alpine sh -c "npm ci && npm test"'
             }
         }
 
