@@ -7,8 +7,15 @@ pipeline {
 
     stages {
         stage('Ejecutar Tests') {
+            agent {
+                docker {
+                    image 'node:22-alpine'
+                    reuseNode true
+                }
+            }
             steps {
-                sh 'docker run --rm -v "$WORKSPACE":/app -w /app node:22-alpine sh -c "npm ci && npm test"'
+                sh 'npm ci'
+                sh 'npm test'
             }
         }
 
